@@ -1,0 +1,1 @@
+default_app_config = 'what_we_do.apps.WhatWeDoConfig'

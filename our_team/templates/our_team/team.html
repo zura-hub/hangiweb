@@ -1,0 +1,147 @@
+{% load i18n %}
+{% load static %}
+{% get_current_language as LANGUAGE_CODE %}
+{% get_available_languages as LANGUAGES %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Empowering individuals with disabilities through inclusive services and support.">
+
+    <!-- SEO Meta Tags for Accessibility -->
+    <meta name="keywords" content="disabilities, accessibility, inclusive services, support, adaptive technology">
+    <meta name="author" content="Hangi">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph Meta Tags for Social Media -->
+    <meta property="og:title" content="Hangi - Empowering Individuals with Disabilities">
+    <meta property="og:description"
+          content="Providing inclusive services and support for individuals with disabilities.">
+    <meta property="og:image" content="URL_to_your_organization_logo_image">
+    <meta property="og:url" content="URL_to_your_organization_website">
+    <meta property="og:type" content="www.hangi.ge">
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Hangi - Empowering Individuals with Disabilities">
+    <meta name="twitter:description"
+          content="Providing inclusive services and support for individuals with disabilities.">
+    <meta name="twitter:image" content="www.hangi.ge">
+
+    <!-- Accessibility Meta Tags -->
+    <meta name="content-language" content="en">
+    <meta name="audience" content="individuals with disabilities, caregivers, advocates">
+    <meta name="accessibility" content="WCAG 2.0, ADA compliant">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="www.hangi.ge">
+    <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
+
+
+    <title>Hangi - Empowering Individuals with Disabilities</title>
+</head>
+
+<body>
+
+<form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+    <input name="next" type="hidden" value="{{ redirect_to }}">
+    <select name="language">
+        {% get_current_language as LANGUAGE_CODE %}
+        {% get_available_languages as LANGUAGES %}
+        {% get_language_info_list for LANGUAGES as languages %}
+        {% for language in languages %}
+        <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %} selected {% endif %}>
+
+            {{ language.name_local }} ({{ language.code }})
+        </option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="Go">
+</form>
+
+
+<div class="container">
+    <nav class="main_nav">
+        <div class="nav-bar">
+            .
+            <div class="icons">
+                {% for list_item in lists %}
+                <h1 class="symbol_one">{{ list_item.meniu }}</h1>
+                {% endfor %}
+                <h2 class="symbol_two">✘</h2>
+            </div>
+
+            <ul class="nav-list">
+                {% for list_item in lists %}
+                <li class="li-list"><a href="{% url 'index' %}">{{ list_item.home }}</a></li>
+                <li class="li-list"><a href="{% url 'social' %}">{{ list_item.social }}</a></li>
+                <li class="li-list"><a href="{% url 'gallery' %}">{{ list_item.gallery }}</a></li>
+                <li class="li-list"><a href="{% url 'team' %}">{{ list_item.team }}</a></li>
+                <li class="li-list" id="project">{{ list_item.project }}</li>
+                <li class="li-list" id="project_inner"><a href="{% url 'what_we_do' %}">{{ list_item.done }}</a></li>
+                <li class="li-list" id="project_inner"><a href="{% url 'what_we_doing:what_we_doing' %}">{{ list_item.doing }}</a></li>
+                <li class="li-list"><a href="{% url 'Phartner' %}">{{ list_item.partnership }}</a></li>
+                <li class="li-list">{{ list_item.apps }}</li>
+                <li class="li-list"><a href="{% url 'contact' %}">{{ list_item.contact }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+
+
+        <div class="social_icons">
+            <div class="fb"><a href="https://www.facebook.com/profile.php?id=61554995004481" target="_blank"><img
+                    src="{% static 'main/images/fb.png' %}" alt=""></a></div>
+            <div class="insta"><img src="{% static 'main/images/instaremoved.png' %}" alt=""></div>
+            <div class="twit"><img src="{% static 'main/images/twitremoved.png' %}" alt=""></div>
+        </div>
+    </nav>
+</div>
+
+
+{% block content %}
+<div class="container">
+    {% for team in team %}
+    <h1 class="headers">{{team.title}}</h1>
+    {% endfor %}
+
+
+    <div class="gallery">
+        {% for employee in employees %}
+        <div class="gallery_inner">
+            <div class="photo-container" id="full_screen-{{ employee.id }}">
+                <img class="photo" src="{{ employee.image.url }}" alt="{{ employee.name }}">
+            </div>
+
+            <div class="img_tmb_cont">
+                <img class="photo_thmb" src="{{ employee.image.url }}" alt="{{ employee.name }}">
+                <div class="description">{{ employee.name }}</div>
+                <p class="history" id="employeeHistory">{{ employee.history | linebreaksbr }}</p>
+                <a class="read" href="{% url 'employee_detail' employee_id=employee.id %}">Read More</a>
+            </div>
+
+
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}
+
+
+<div class="footer">
+    <p>&copy; Association Hangi</p>
+    <p>Chain man of the Board: <br> Ruslan Sajaia <a href="tel:+995 593 35 37 02">+995 593 35 37 02</a></p>
+    <p>Email-Ge: <a href="mailto:haangi35@gmail.com">haangi35@gmail.com</a></p>
+    <p>Email-En: <a href="mailto:haangistudio.84@gmail.com">haangistudio.84@gmail.com</a></p>
+    <p>Registered on November 18, 1999. S/K 220412097</p>
+</div>
+
+
+<script src="{% static 'main/js/js.js' %}"></script>
+</body>
+
+</html>
